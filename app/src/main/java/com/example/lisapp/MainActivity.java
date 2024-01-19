@@ -2,6 +2,7 @@ package com.example.lisapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
@@ -12,7 +13,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void startActivity(){
-        //dfjclksdjf
+    public void accelerometer(){
+        Intent intent = new Intent(this, MainActivity2.class);
+        startActivity(intent);
     }
 }
