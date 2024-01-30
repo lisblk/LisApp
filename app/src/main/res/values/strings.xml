@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">LisApp</string>
     <string name="title_activity_button1">button1</string>
+    <string name="back_btn">Back</string>
 </resources>

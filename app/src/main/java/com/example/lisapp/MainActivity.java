@@ -19,4 +19,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void mysteryActivity(View v){
+        Intent intent = new Intent(this, MainActivity3.class);
+        startActivity(intent);
+    }
+
 }
