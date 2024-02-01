@@ -13,9 +13,10 @@ import android.hardware.SensorEventListener;
 
 public class MainActivity2 extends AppCompatActivity implements SensorEventListener{
     private SensorManager sensorManager;
-    TextView xCoor; // declare X axis object
-    TextView yCoor; // declare Y axis object
-    TextView zCoor; // declare Z axis object
+    private TextView xCoor, yCoor, zCoor;
+    private float[] gravity = new float[3];
+    private float alpha = 0.2f; // Adjust this value for the desired filtering strength
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +41,22 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
+            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
 
-            xCoor.setText("X: "+x);
-            yCoor.setText("Y: "+y);
-            zCoor.setText("Z: "+z); //[1]
+            float x = event.values[0] - gravity[0];
+            float y = event.values[1] - gravity[1];
+            float z = event.values[2] - gravity[2];
+
+            String xstring = String.format("%.2f",x);
+            String ystring = String.format("%.2f",y);
+            String zstring = String.format("%.2f",z);
+
+
+            xCoor.setText("X: "+ xstring);
+            yCoor.setText("Y: "+ystring);
+            zCoor.setText("Z: "+zstring); //[1]
         }
     }
 
