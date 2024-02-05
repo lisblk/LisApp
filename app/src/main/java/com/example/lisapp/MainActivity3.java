@@ -73,4 +73,12 @@ public class MainActivity3 extends AppCompatActivity implements SensorEventListe
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
+
+    public void fortuneTeller(int i){
+        switch (i)
+            case
     }
+
+
+    }
+
