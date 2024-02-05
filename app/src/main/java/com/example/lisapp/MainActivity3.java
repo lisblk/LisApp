@@ -45,10 +45,8 @@ public class MainActivity3 extends AppCompatActivity implements SensorEventListe
     }
 
     public void roll() {
-            int randy = rand.nextInt(6) + 1;
-            String s = String.valueOf(randy);
             di1 = (TextView) findViewById(R.id.di1);
-            di1.setText(s);
+            di1.setText(fortuneTeller());
     }
 
     @Override
@@ -74,11 +72,33 @@ public class MainActivity3 extends AppCompatActivity implements SensorEventListe
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 
-    public void fortuneTeller(int i){
-        switch (i)
-            case
-    }
+    public String fortuneTeller(){
+        int randy = rand.nextInt(10);
+        switch (randy) {
+            case 0:
+                return "Aldrig";
+            case 1:
+                return "Kanske";
+            case 2:
+                return "Nej";
+            case 3:
+                return "Glöm det";
+            case 4:
+                return "100%";
+            case 5:
+                return "Definitivt";
+            case 6:
+                return "Inte nu";
+            case 7:
+                return "JAAAA";
+            case 8:
+                return "Aa, faktiskt";
+            case 9:
+                return "På egen risk";
+            default:
+                return "testa igen";
 
-
+            }
+        }
     }
 
