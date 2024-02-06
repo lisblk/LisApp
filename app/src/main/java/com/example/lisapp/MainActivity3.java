@@ -8,21 +8,18 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
-
-import java.sql.SQLOutput;
 import java.util.Random;
+import android.os.Vibrator;
 
 public class MainActivity3 extends AppCompatActivity implements SensorEventListener {
-
-    private static final float SHAKE_THRESHOLD = 5.0f; // Adjust this value as needed
-    private static final int SHAKE_TIME_INTERVAL = 100; // Adjust this value as needed
-
+    private static final float SHAKE_THRESHOLD = 5.0f;
     private SensorManager sensorManager;
     Random rand;
     TextView di1;
-    private long lastShakeTime;
+    Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +34,9 @@ public class MainActivity3 extends AppCompatActivity implements SensorEventListe
         if (accelerometerSensor != null) {
             sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
+
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
     }
 
     public void home(View v){
@@ -46,15 +46,31 @@ public class MainActivity3 extends AppCompatActivity implements SensorEventListe
 
     public void roll() {
             di1 = (TextView) findViewById(R.id.di1);
-            di1.setText(fortuneTeller());
+
+        di1.setText(".");
+
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            di1.setText("..");
+
+            handler.postDelayed(() -> {
+                di1.setText("...");
+
+                handler.postDelayed(() -> {
+                    di1.setText("");
+                    di1.setText(fortuneTeller());
+                    vibrator.vibrate(100);
+                }, 700);
+            }, 700);
+        }, 700);
+
+        onResume();
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            long currentTime = System.currentTimeMillis();
 
-            if ((currentTime - lastShakeTime) > SHAKE_TIME_INTERVAL) {
                 float x = event.values[0];
                 float y = event.values[1];
                 float z = event.values[2];
@@ -62,15 +78,24 @@ public class MainActivity3 extends AppCompatActivity implements SensorEventListe
                 double acceleration = Math.sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH;
 
                 if (acceleration > SHAKE_THRESHOLD) {
-                    lastShakeTime = currentTime;
+                    onPause();
                     roll();
                 }
-            }
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
+
+    public void onPause(){
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    public void onResume(){
+        super.onResume();
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
     public String fortuneTeller(){
         int randy = rand.nextInt(10);
